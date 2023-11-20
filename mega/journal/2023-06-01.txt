@@ -1,3 +1,0 @@
-Mood Rating: 2
- * 2journal Entry: 
-public staic void main(STring)
