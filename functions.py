@@ -1,7 +1,7 @@
 import os.path
 # 基本路径
-base_path = '/'
-subfiles_path = os.path.join(base_path, "mega")
+base_path = '/Users/pzj/PycharmProjects'
+subfiles_path = os.path.join(base_path, "todo_app")
 full_path = os.path.join(subfiles_path, 'todos.txt')
 
 
@@ -16,7 +16,7 @@ def get_todos(path=full_path):
 
 def write_todos(todos_list, path=full_path):
     """ Write the to-do items list in the text file"""
-    with open(path, 'a') as file_local:
+    with open(path, 'w') as file_local:
         todos_local = file_local.writelines(todos_list)
     return todos_local
 

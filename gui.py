@@ -16,13 +16,14 @@ window = sg.Window("My To-Do App", layout=layout, font=("Helvetica", 15))
 
 while True:
     event, values = window.read()
-    print(event, values)
+
     match event:
         case "add":
             new_todos = values["todo"] + "\n"
             todos.append(new_todos)
             functions.write_todos(todos)
             window["todos"].update(values=todos)
+            window["todo"].update(value="")
 
         case "edit":
             todo_to_edit = values["todos"][0]
@@ -32,12 +33,14 @@ while True:
             todos[index] = new_todo + "\n"
             functions.write_todos(todos)
             window["todos"].update(values=todos)
+            window["todo"].update(value="")
 
         case "complete":
             todo_to_edit = values["todos"][0]
-            index = todos.index(todo_to_edit)
-            todos.pop(index)
+            todos.remove(todo_to_edit)
+            functions.write_todos(todos)
             window["todos"].update(values=todos)
+            window["todo"].update(value="")
 
         case "todos":
             window["todo"].update(value=values['todos'][0])
