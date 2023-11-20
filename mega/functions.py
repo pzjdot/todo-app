@@ -1,7 +1,7 @@
 import os.path
 # 基本路径
-base_path = '/'
-subfiles_path = os.path.join(base_path, "mega/file/subfiles")
+base_path = '/Users/pzj/PycharmProjects/todo_app'
+subfiles_path = os.path.join(base_path, "mega")
 full_path = os.path.join(subfiles_path, 'todos.txt')
 
 
