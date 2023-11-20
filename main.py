@@ -1,5 +1,5 @@
 # from functions import get_todos, write_todos
-from mega import functions
+import functions
 
 while True:
     user_action = input("type add, show, edit, complete or exit: ")
