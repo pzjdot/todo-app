@@ -16,7 +16,7 @@ def get_todos(path=full_path):
 
 def write_todos(todos_list, path=full_path):
     """ Write the to-do items list in the text file"""
-    with open(path, 'w') as file_local:
+    with open(path, 'a') as file_local:
         todos_local = file_local.writelines(todos_list)
     return todos_local
 
