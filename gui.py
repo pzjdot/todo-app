@@ -7,10 +7,15 @@ todos = functions.get_todos()
 layout = [
     [sg.Text("", key="clock")],
     [sg.Text("My To-Do App")],
-    [sg.InputText(tooltip="Enter todo", key="todo"), sg.Button("add")],
+    [sg.InputText(tooltip="Enter todo", key="todo", size=42), sg.Button(size=2, image_source="add.png",
+                                                                        mouseover_colors="LightBlue2",
+                                                                        tooltip="add todo", key="add")],
+
     [sg.Listbox(values=functions.get_todos(), key="todos",
                 enable_events=True, size=(45, 10))],
-    [sg.Button("edit"), sg.Button("complete"), sg.Text(key="Error", size=31), sg.Button("exit")]
+    [sg.Button("edit"), sg.Button(size=2, image_source="complete.png", mouseover_colors="LightBlue2",
+                                  tooltip="complete todo", key="complete"),
+     sg.Text(key="Error", size=28), sg.Button("exit")]
 
 ]
 
