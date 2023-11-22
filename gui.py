@@ -1,8 +1,14 @@
+import os.path
+
 import PySimpleGUI as sg
 import functions
 import time
+import os
 sg.theme("DarkTeal2")
 todos = functions.get_todos()
+
+if not os.path.exists("todos.txt"):
+    pass
 
 layout = [
     [sg.Text("", key="clock")],
@@ -11,7 +17,7 @@ layout = [
                                                                         mouseover_colors="LightBlue2",
                                                                         tooltip="add todo", key="add")],
 
-    [sg.Listbox(values=functions.get_todos(), key="todos",
+    [sg.Listbox(values=functions .get_todos(), key="todos",
                 enable_events=True, size=(45, 10))],
     [sg.Button("edit"), sg.Button(size=2, image_source="complete.png", mouseover_colors="LightBlue2",
                                   tooltip="complete todo", key="complete"),
@@ -27,7 +33,8 @@ while True:
 
     match event:
         case "add":
-            new_todos = values["todo"] + "\n"
+            new_todos = (
+                     values["todo"] + "\n")
             todos.append(new_todos)
             functions.write_todos(todos)
             window["todos"].update(values=todos)
