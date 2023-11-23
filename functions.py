@@ -1,8 +1,8 @@
 import os.path
 # 基本路径
-base_path = '/Users/pzj/PycharmProjects'
-subfiles_path = os.path.join(base_path, "todo_app")
-full_path = os.path.join(subfiles_path, 'todos.txt')
+
+base_path = os.path.abspath(os.path.dirname(__file__))
+full_path = os.path.join(base_path, "todos.txt")
 
 
 def get_todos(path=full_path):
