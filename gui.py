@@ -1,78 +1,79 @@
-import os.path
-
-import PySimpleGUI as sg
-import functions
 import time
-import os
-sg.theme("DarkTeal2")
-todos = functions.get_todos()
+import functions
+import PySimpleGUI as sg
 
-if not os.path.exists("todos.txt"):
-    pass
+
+def add_todo(todo):
+    todos.append(todo + "\n")
+    functions.write_todos(todos)
+
+
+def remove_to_todos(index):
+    del todos[index]
+    functions.write_todos(todos)
+
+
+def update_to_todos():
+    window["todo_list"].update(values=todos)
+    window["todo"].update(value="")
+
+
+def edit_to_todo(todo, index):
+    todos[index] = todo + "\n"
+    functions.write_todos(todos)
+
+
+def select_todo(todo):
+    window["todo"].update(value=todo)
+
+
+todos = functions.get_todos()
+sg.theme("LightBlue2")
 
 layout = [
     [sg.Text("", key="clock")],
-    [sg.Text("My To-Do App")],
-    [sg.InputText(tooltip="Enter todo", key="todo", size=42), sg.Button(size=2, image_source="add.png",
-                                                                        mouseover_colors="LightBlue2",
-                                                                        tooltip="add todo", key="add")],
+    [sg.Text("My To-Do App", font=("PingFang SC", 20))],
+    [sg.InputText(tooltip="Enter To-Do", size=42, key="todo"), sg.Button(key="add", image_source="add.png",
+                                                                         mouseover_colors="LightBlue2")],
+    [sg.Listbox(values=functions.get_todos(), key="todo_list", size=(45, 10), enable_events=True,
+                font=("PingFang SC", 16))],
 
-    [sg.Listbox(values=functions .get_todos(), key="todos",
-                enable_events=True, size=(45, 10))],
-    [sg.Button("edit"), sg.Button(size=2, image_source="complete.png", mouseover_colors="LightBlue2",
-                                  tooltip="complete todo", key="complete"),
-     sg.Text(key="Error", size=28), sg.Button("exit")]
-
+    [sg.Button("edit", key="edit"), sg.Button(key="complete", image_source="complete.png",
+                                              mouseover_colors="LightBlue2"), sg.Button("exit", key="exit")]
 ]
 
-window = sg.Window("My To-Do App", layout=layout, font=("Helvetica", 15))
+
+window = sg.Window("My To-Do App", layout=layout, font=("PingFang SC", 16))
 
 while True:
     event, values = window.read(timeout=200)
     window["clock"].update(value=time.strftime("%b %d, %Y %H:%M:%S"))
+    if event == sg.WIN_CLOSED:
+        break
 
-    match event:
-        case "add":
-            new_todos = (
-                     values["todo"] + "\n")
-            todos.append(new_todos)
-            functions.write_todos(todos)
-            window["todos"].update(values=todos)
-            window["todo"].update(value="")
-            window["Error"].update(value="")
+    if event == "add":
+        add_todo(values["todo"])
+        update_to_todos()
 
-        case "edit":
-            try:
-                todo_to_edit = values["todos"][0]
-                new_todo = values["todo"]
+    elif event == "edit":
+        if values["todo_list"]:
+            edit_to_todo(values["todo"], todos.index(values["todo_list"][0]))
+            update_to_todos()
+        else:
+            sg.popup("Please select an item first", font=("PingFang SC", 15), text_color="Yellow")
 
-                index = todos.index(todo_to_edit)
-                todos[index] = new_todo + "\n"
-                functions.write_todos(todos)
-                window["todos"].update(values=todos)
-                window["todo"].update(value="")
-            except IndexError:
-                sg.popup("please select an item first", title="Error",
-                         font=("Helvetica", 15), text_color="Yellow")
+    elif event == "complete":
+        if values["todo_list"]:
+            remove_to_todos(todos.index(values["todo_list"][0]))
+            update_to_todos()
+        else:
+            sg.popup("Please select an item first", font=("PingFang SC", 15), text_color="Yellow")
 
-        case "complete":
-            try:
-                todo_to_edit = values["todos"][0]
-                todos.remove(todo_to_edit)
-                functions.write_todos(todos)
-                window["todos"].update(values=todos)
-                window["todo"].update(value="")
-            except IndexError:
-                sg.popup("please select an item first", title="Error",
-                         font=("Helvetica", 15), text_color="Yellow")
+    elif event == "todo_list":
+        select_todo(values["todo_list"][0])
 
-        case "todos":
-            window["todo"].update(value=values['todos'][0])
-
-        case "exit":
-            break
-
-        case sg.WIN_CLOSED:
-            break
+    elif event == "exit":
+        break
 
 window.close()
+
